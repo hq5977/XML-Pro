@@ -7,4 +7,7 @@ public interface XmlDocument {
 	 * @param fileName
 	 */
 	public void parserXml(String fileName);
+	
+	
+	public void createXml(String fileName);
 }

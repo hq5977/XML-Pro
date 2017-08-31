@@ -1,12 +1,21 @@
 package com.test.xml.dom;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,6 +29,73 @@ import com.test.xml.XmlDocument;
 */
 public class DomDemo3 implements XmlDocument {
 
+	@Override
+	public void createXml(String fileName) {
+
+		Document document =null;
+		
+		DocumentBuilder db=getDocumentBuilder();
+		document=db.newDocument();
+		document.setXmlStandalone(true);
+		Element bookStore=document.createElement("bookStore");
+		
+		//向bookStore根节点添加子节点book
+		Element book=document.createElement("book");
+		
+		Element name=document.createElement("name");
+		//name.setNodeValue("小王子");
+		name.setTextContent("小王子");
+		book.appendChild(name);
+		
+		Element author=document.createElement("author");
+		author.setTextContent("Tom");
+		book.appendChild(author);
+		
+		Element year=document.createElement("year");
+		year.setTextContent("2015");
+		book.appendChild(year);
+		
+		Element price=document.createElement("price");
+		price.setTextContent("23");
+		book.appendChild(price);
+		
+		book.setAttribute("id", "1");
+		//将book节点添加到bookstore根节点中
+		bookStore.appendChild(book);
+		//将bookstore节点添加到dom树中
+		document.appendChild(bookStore);
+		//创建TransformerFactory对象		
+		TransformerFactory tff=TransformerFactory.newInstance();
+		try {
+			//创建Transformer对象			
+			Transformer tf=tff.newTransformer();
+			tf.setOutputProperty(OutputKeys.INDENT, "yes");
+			tf.transform(new DOMSource(document), new StreamResult(new File(fileName)));
+		} catch (TransformerConfigurationException e) {
+			
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			
+			e.printStackTrace();
+		}
+	
+	
+	}
+	/**
+	 * 
+	 */
+	public DocumentBuilder getDocumentBuilder() {
+		DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+		DocumentBuilder db=null;
+		try {
+			db=factory.newDocumentBuilder();
+		} catch (ParserConfigurationException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return db;
+	}
 	@Override
 	public void parserXml(String fileName) {
 		
@@ -72,7 +148,8 @@ public class DomDemo3 implements XmlDocument {
 		}
 	public static void main(String[] args) {
 		XmlDocument xmltest=new DomDemo3();
-		xmltest.parserXml("people.xml");
+		//xmltest.parserXml("people.xml");
+		xmltest.createXml("books1.xml");
 	}
 
 }

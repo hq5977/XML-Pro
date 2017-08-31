@@ -21,6 +21,10 @@ import com.test.xml.XmlDocument;
 public class DomDemo2 implements XmlDocument {
 
 	@Override
+	public void createXml(String fileName) {
+	}
+
+	@Override
 	public void parserXml(String fileName) {
 		try {
 			DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();

@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -18,6 +19,23 @@ import com.test.xml.XmlDocument;
 *@date 2017年8月30日
 */
 public class DomDemo implements XmlDocument {
+
+	@Override
+	public void createXml(String fileName) {
+		Document document =null;
+		
+		DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder builder=factory.newDocumentBuilder();
+			document=builder.newDocument();
+			Element root=document.createElement("books");
+			
+		} catch (ParserConfigurationException e) {
+			
+			e.printStackTrace();
+		}
+	
+	}
 
 	@Override
 	public void parserXml(String fileName) {
