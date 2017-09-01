@@ -1,6 +1,9 @@
 package com.test.xml.jdom;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +14,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 import com.test.xml.XmlDocument;
 
@@ -66,11 +71,44 @@ public class JDomDemo2 implements XmlDocument {
 
 	@Override
 	public void createXml(String fileName) {
+		
+		//生成一个根节点
+		Element rss=new Element("rss");
+		//为节点添加属性
+		rss.setAttribute("version","2.0");
+		//生成一个document对象
+		Document document=new Document(rss);
+		
+		Element channel=new Element("channel");
+		rss.addContent(channel);
+		
+		Element title=new Element("title");
+		title.setText("<![CDATA[上海移动互联网产业促进中心正式揭牌 ]]>");
+		channel.addContent(title);
+		
+		Format format=Format.getCompactFormat();
+		format.setIndent("");
+		format.setEncoding("GBK");
+		
+		//创建XMLOutputter的对象
+		XMLOutputter outputter=new XMLOutputter(format);
+		try {
+			//利用outputter将document对象转换成xml文档
+			outputter.output(document, new FileOutputStream(new File("rssnews2.xml")));
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void main(String[] args) {
 		XmlDocument xmlJdom=new JDomDemo2();
-		xmlJdom.parserXml("src/res/books.xml");
+		//xmlJdom.parserXml("src/res/books.xml");
+		xmlJdom.createXml("");
 	}
 
 }

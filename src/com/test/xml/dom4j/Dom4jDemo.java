@@ -7,6 +7,7 @@ import java.util.List;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
@@ -49,6 +50,12 @@ public class Dom4jDemo implements XmlDocument {
 
 	@Override
 	public void createXml(String fileName) {
+
+		//创建document对象，代表整个想xml文档
+		Document document=DocumentHelper.createDocument();
+		//创建根节点rss
+		document.addElement("books");
+	
 	}
 
 	public static void main(String[] args) {
